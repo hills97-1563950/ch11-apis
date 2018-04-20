@@ -14,19 +14,19 @@ library(dplyr)
 # Create a variable `resource` that stores the endpoint for the "info201"
 # organization repos (this is the PATH to the resource of interest).
 # (FYI: this is where we keep the book code and master exercise sets!)
-
+resources <- "/orgs/info201/repos"
 
 # Send a GET request to this endpoint (the `base_uri`` followed by `resource`)
-
+response <- GET(paste0(base_uri, resources))
 
 # Extract the "text" of the response usin the `content` function
-
+body <- content(repose, "text")
 
 # Convert the body from JSON into a data frame
-
+info_repos <-fromJSON(body)
 
 # How many (public) repositories does the organization have?
-
+print(nrow(info_repos))
 
 ##### New query ######
 
@@ -42,13 +42,15 @@ library(dplyr)
 
 
 # Send a GET request to this endpoint--including your params list as the `query`
-
+response <- GET(paste0(base_uri, resources), query = query_params)
 
 # Extract the response body and convert it from JSON.
-
+body <- content(response, "text")
+results <- fromJSON(body)
 
 # How many search repos did your search find? (Hint: check the list names)
-
+print(result$total_count)
 
 # What are the full names of the top 5 results?
-
+vis_repo_names <- results$items$full_name[1:5]
+print(vis_repo_names)
